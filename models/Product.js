@@ -5,7 +5,7 @@ const productSchema = new db.Schema({
     type: String,
     required: true
   },
-  proce: {
+  price: {
     type: Number,
     required: true
   },

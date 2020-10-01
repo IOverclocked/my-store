@@ -14,12 +14,12 @@ const NavBar = () => {
 
   return (
     <nav>
-      <div class="nav-wrapper blue darken-3">
+      <div className="nav-wrapper blue darken-3">
         <Link href="/">
-          <a class="brand-logo">Logo</a>
+          <a className="brand-logo">Logo</a>
         </Link>
 
-        <ul id="nav-mobile" class="right">
+        <ul id="nav-mobile" className="right">
           <li className={isActive('/login')}>
             <Link href="/login">
               <a>Login</a>

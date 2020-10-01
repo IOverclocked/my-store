@@ -1,12 +1,13 @@
-import NavBar from '../components/NavBar'
+import NavBar from 'components/NavBar'
 import Head from 'next/head'
 
 const Layout = ({ children }) => {
   return (
     <>
       <Head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" />
       </Head>
       <NavBar />
       {children}

@@ -1,24 +1,23 @@
-import Link from 'next/link';
+import ProductsList from 'components/ProductsList';
+import baseUrl from 'helpers/baseUrl';
 
-const Home = ({ message }) => {
+const Home = ({ products }) => {
+  console.log(products)
   return (
-    <>
-      { message }
-       
-      <Link href="/product"><a>go to product</a></Link>
-    </>
-  )
-}
+    <div className="rootcard">
+      <ProductsList products={products}/>
+    </div>
+  );
+};
 
 export async function getStaticProps() {
-  const res = await fetch('http://localhost:3000/api/products');
-  const data = await res.json();
-  console.log(data);
+  const res = await fetch(`${baseUrl}/api/products`);
+  const products = await res.json();
   return {
     props: {
-      message: data.message
-    }
-  }
+      products,
+    },
+  };
 }
 
 export default Home;
