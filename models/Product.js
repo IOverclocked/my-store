@@ -1,22 +1,22 @@
-import db from 'mongoose';
+import db from 'mongoose'
 
 const productSchema = new db.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   mediaUrl: {
     type: String,
-    required: true
+    required: true,
   },
-});
+})
 
-export default db.models.product || db.model('product', productSchema);
+export default db.models.product || db.model('product', productSchema)

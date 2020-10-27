@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+
+import baseUrl from 'helpers/baseUrl'
 
 const defaultValues = {
   name: '',
   price: '',
   media: '',
   description: '',
-};
+}
 
 const Create = () => {
-  const [values, setValues] = useState(defaultValues);
-  const { name, price, media, description } = values;
-  const [isValidate, setIsValidate] = useState(false);
+  const router = useRouter()
+  const [values, setValues] = useState(defaultValues)
+  const { name, price, media, description } = values
+  const [isValidate, setIsValidate] = useState(false)
 
   const setValidateClass = (key) => {
     if (isValidate && !values[key]) {
@@ -20,26 +24,56 @@ const Create = () => {
     return ''
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsValidate(true);
-    console.log(values);
-    console.log(validateValues());
-  };
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = (error) => reject(error)
+    })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsValidate(true)
+
+    if (validateValues()) {
+      try {
+        const res = await fetch(`${baseUrl}/api/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...values,
+            mediaUrl: await fileToBase64(media),
+          }),
+        })
+
+        const data = await res.json()
+
+        if (res.ok) {
+          M.toast({ html: 'Success', classes: 'green' })
+          router.push('/')
+        } else throw new Error(data.errorMsg)
+      } catch (err) {
+        M.toast({ html: err.message, classes: 'red' })
+      }
+    }
+  }
 
   const validateValues = () => {
-    return Object.values(values).every(value => value);
+    return Object.values(values).every((value) => value)
   }
 
   const handleChange = (e, isFile) => {
     if (isFile) {
-      const { files } = e.target;
-      setValues((prev) => ({ ...prev, media: files[0] }));
+      const { files } = e.target
+      setValues((prev) => ({ ...prev, media: files[0] }))
     } else {
-      const { name, value } = e.target;
-      setValues((prev) => ({ ...prev, [name]: value }));
+      const { name, value } = e.target
+      setValues((prev) => ({ ...prev, [name]: value }))
     }
-  };
+  }
 
   return (
     <form className="container" onSubmit={(e) => handleSubmit(e)}>
@@ -69,7 +103,9 @@ const Create = () => {
         <div className="input-field col s12">
           <textarea
             name="description"
-            className={`materialize-textarea validate ${setValidateClass('description')}`}
+            className={`materialize-textarea validate ${setValidateClass(
+              'description',
+            )}`}
             placeholder="Description"
             style={{ height: '0px', Client: null }}
             value={description}
@@ -89,7 +125,12 @@ const Create = () => {
             />
           </div>
           <div className="file-path-wrapper">
-            <input className={`file-path validate ${setValidateClass('description')}`} type="text" />
+            <input
+              className={`file-path validate ${setValidateClass(
+                'description',
+              )}`}
+              type="text"
+            />
           </div>
         </div>
         <img
@@ -106,7 +147,7 @@ const Create = () => {
         </div>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default Create;
+export default Create

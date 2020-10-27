@@ -1,20 +1,20 @@
-import { useRef, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import baseUrl from 'helpers/baseUrl';
+import { useRef, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import baseUrl from 'helpers/baseUrl'
 
 const Product = ({ product }) => {
-  const router = useRouter();
-  const { _id, name, price, description, mediaUrl } = product;
-  const [resMsg, setResMsg] = useState('');
-  const [deleteModal, setDeleteModal] = useState(null);
-  const [infoModal, setInfoModal] = useState(null);
-  const deleteModalRef = useRef(null);
-  const infoModalRef = useRef(null);
+  const router = useRouter()
+  const { _id, name, price, description, mediaUrl } = product
+  const [resMsg, setResMsg] = useState('')
+  const [deleteModal, setDeleteModal] = useState(null)
+  const [infoModal, setInfoModal] = useState(null)
+  const deleteModalRef = useRef(null)
+  const infoModalRef = useRef(null)
 
   useEffect(() => {
-    setDeleteModal(M.Modal.init(deleteModalRef.current));
-    setInfoModal(M.Modal.init(infoModalRef.current));
-  }, [deleteModalRef, infoModalRef]);
+    setDeleteModal(M.Modal.init(deleteModalRef.current))
+    setInfoModal(M.Modal.init(infoModalRef.current))
+  }, [deleteModalRef, infoModalRef])
 
   const getDeleteModal = () => {
     return (
@@ -24,7 +24,10 @@ const Product = ({ product }) => {
           <p>Are you sure you want to delete this</p>
         </div>
         <div className="modal-footer">
-          <button className="btn blue darken-1" onClick={() => deleteModal.close()}>
+          <button
+            className="btn blue darken-1"
+            onClick={() => deleteModal.close()}
+          >
             Cancel
           </button>
           &nbsp;
@@ -33,8 +36,8 @@ const Product = ({ product }) => {
           </button>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const getInfoModal = () => {
     return (
@@ -44,31 +47,34 @@ const Product = ({ product }) => {
           <p>{resMsg}</p>
         </div>
         <div className="modal-footer">
-          <button className="btn blue darken-1" onClick={() => {
-            infoModal.close();
-            router.push('/');
-          }}>
+          <button
+            className="btn blue darken-1"
+            onClick={() => {
+              infoModal.close()
+              router.push('/')
+            }}
+          >
             Close
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   const deleteProduct = async () => {
     try {
       const res = await fetch(`${baseUrl}/api/product/${_id}`, {
-        method: 'DELETE'
-      });
-      const { message } = await res.json();
-      setResMsg(message);
+        method: 'DELETE',
+      })
+      const { message } = await res.json()
+      setResMsg(message)
     } catch (err) {
-      console.log(err);
-      setResMsg('Sorry, now we not can do this. Try to later.');
+      console.log(err)
+      setResMsg('Sorry, now we not can do this. Try to later.')
     }
 
-    deleteModal.close();
-    infoModal.open();
+    deleteModal.close()
+    infoModal.open()
   }
 
   return (
@@ -89,41 +95,45 @@ const Product = ({ product }) => {
 
       <p className="center-align">{description}</p>
 
-      <button data-target="deleteModal" className="btn red darken-1" onClick={() => deleteModal.open()}>
+      <button
+        data-target="deleteModal"
+        className="btn red darken-1"
+        onClick={() => deleteModal.open()}
+      >
         Delete
         <i className="material-icons left">delete</i>
       </button>
-      
+
       {getDeleteModal()}
       {getInfoModal()}
     </div>
-  );
-};
+  )
+}
 
 export async function getStaticProps(context) {
   const {
     params: { _id },
-  } = context;
-  const res = await fetch(`${baseUrl}/api/product/${_id}`);
-  const product = await res.json();
+  } = context
+  const res = await fetch(`${baseUrl}/api/product/${_id}`)
+  const product = await res.json()
   return {
     props: {
       product,
     },
-  };
+  }
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${baseUrl}/api/products`);
-  const products = await res.json();
+  const res = await fetch(`${baseUrl}/api/products`)
+  const products = await res.json()
   const paths = products.map(({ _id }) => ({
     params: { _id },
-  }));
+  }))
 
   return {
     paths,
     fallback: false,
-  };
+  }
 }
 
-export default Product;
+export default Product

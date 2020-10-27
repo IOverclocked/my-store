@@ -1,11 +1,26 @@
-import Link from 'next/link';
+import Link from 'next/link'
 
 const ProductsList = ({ products }) => {
+  const base64ToFile = (formAttachment) => {
+    if (formAttachment) {
+      const byteCharacters = atob(formAttachment.contents)
+      const byteNumbers = new Array(byteCharacters.length)
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i)
+      }
+      const byteArray = new Uint8Array(byteNumbers)
+      const blob = new Blob([byteArray], { type: 'application/octet-stream' })
+      const file = new File([blob], formAttachment.name)
 
+      setValues({ ...values, attachment: [file] })
+    } else {
+      setValues({ ...values, attachment: null })
+    }
+  }
   return (
     <>
       {products.map((product) => {
-        const { _id, name, price, description, mediaUrl } = product;
+        const { _id, name, price, description, mediaUrl } = product
         return (
           <div className="card" key={_id}>
             <div className="card-image">
@@ -22,10 +37,10 @@ const ProductsList = ({ products }) => {
               </Link>
             </div>
           </div>
-        );
+        )
       })}
     </>
-  );
-};
+  )
+}
 
-export default ProductsList;
+export default ProductsList

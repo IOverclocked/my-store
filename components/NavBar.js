@@ -1,15 +1,13 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const NavBar = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const isActive = (route) => {
     if (route === router.pathname) {
       return 'active'
-    } 
-
-    else ''
+    } else ''
   }
 
   return (
@@ -38,7 +36,7 @@ const NavBar = () => {
         </ul>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar

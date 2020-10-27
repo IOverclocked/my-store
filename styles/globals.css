@@ -18,7 +18,7 @@ a {
 
 /* global class */
 /* global (mobile and desktop) styles */
-.rootcard { 
+.rootcard {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -34,5 +34,3 @@ a {
     max-width: 30%;
   }
 }
-
-
